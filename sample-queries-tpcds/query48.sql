@@ -1,14 +1,16 @@
 
 select sum (ss_quantity)
- from store_sales, store, customer_demographics, customer_address, date_dim
- where store.s_store_sk = store_sales.ss_store_sk
- and  store_sales.ss_sold_date_sk = date_dim.d_date_sk and d_year = 1998
+ from store_sales
+ JOIN store ON store.s_store_sk = store_sales.ss_store_sk
+ JOIN customer_demographics ON customer_demographics.cd_demo_sk = store_sales.ss_cdemo_sk
+ JOIN customer_address ON store_sales.ss_addr_sk = customer_address.ca_address_sk
+ JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk
+ where
+ d_year = 1998
  and ss_sold_date between '1998-01-01' and '1998-12-31'
  and  
  (
   (
-   customer_demographics.cd_demo_sk = store_sales.ss_cdemo_sk
-   and 
    cd_marital_status = 'M'
    and 
    cd_education_status = '4 yr Degree'
@@ -17,8 +19,6 @@ select sum (ss_quantity)
    )
  or
   (
-  customer_demographics.cd_demo_sk = store_sales.ss_cdemo_sk
-   and 
    cd_marital_status = 'M'
    and 
    cd_education_status = '4 yr Degree'
@@ -27,8 +27,6 @@ select sum (ss_quantity)
   )
  or 
  (
-  customer_demographics.cd_demo_sk = store_sales.ss_cdemo_sk
-  and 
    cd_marital_status = 'M'
    and 
    cd_education_status = '4 yr Degree'
@@ -39,24 +37,20 @@ select sum (ss_quantity)
  and
  (
   (
-  store_sales.ss_addr_sk = customer_address.ca_address_sk
-  and
   ca_country = 'United States'
   and
   ca_state in ('KY', 'GA', 'NM')
   and ss_net_profit between 0 and 2000  
   )
  or
-  (store_sales.ss_addr_sk = customer_address.ca_address_sk
-  and
+  (
   ca_country = 'United States'
   and
   ca_state in ('MT', 'OR', 'IN')
   and ss_net_profit between 150 and 3000 
   )
  or
-  (store_sales.ss_addr_sk = customer_address.ca_address_sk
-  and
+  (
   ca_country = 'United States'
   and
   ca_state in ('WI', 'MO', 'WV')
@@ -64,5 +58,4 @@ select sum (ss_quantity)
   )
  )
 ;
-
 

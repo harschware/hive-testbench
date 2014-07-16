@@ -3,3 +3,6 @@ tpcds_kit.zip
 tpch_kit.zip
 *.sql.log
 derby.log
+TempStatsStore/
+apache-maven-*-bin.tar.gz
+apache-maven-*/

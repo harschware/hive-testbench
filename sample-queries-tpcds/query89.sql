@@ -8,11 +8,12 @@ select i_category, i_class, i_brand,
        avg(sum(ss_sales_price)) over
          (partition by i_category, i_brand, s_store_name, s_company_name)
          avg_monthly_sales
-from item, store_sales, date_dim, store
-where store_sales.ss_item_sk = item.i_item_sk and
-      store_sales.ss_sold_date_sk = date_dim.d_date_sk and
-      store_sales.ss_store_sk = store.s_store_sk and
-      store_sales.ss_sold_date between '2000-01-01' and '2000-12-31' and
+from item
+  JOIN store_sales ON store_sales.ss_item_sk = item.i_item_sk
+  JOIN date_dim ON store_sales.ss_sold_date_sk = date_dim.d_date_sk
+  JOIN store ON store_sales.ss_store_sk = store.s_store_sk
+where
+      ss_sold_date between '2000-01-01' and '2000-12-31' and
       d_year in (2000) and
         ((i_category in ('Home','Books','Electronics') and
           i_class in ('wallpaper','parenting','musical')

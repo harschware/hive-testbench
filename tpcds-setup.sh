@@ -81,7 +81,9 @@ do
 	COMMAND="hive -i settings/load-partitioned.sql -f ddl-tpcds/bin_partitioned/${t}.sql \
 	    -d DB=tpcds_bin_partitioned_orc_${SCALE} \
 	    -d SOURCE=tpcds_text_${SCALE} -d BUCKETS=${BUCKETS} \
-	    -d RETURN_BUCKETS=${RETURN_BUCKETS} -d FILE=orc"
+	    -d RETURN_BUCKETS=${RETURN_BUCKETS} \
+	    -d FILE=RCFILE"
+#		-d FILE=orc"
 	runcommand "$COMMAND"
 	if [ $? -ne 0 ]; then
 		echo "Command failed, try 'export DEBUG_SCRIPT=ON' and re-running"
